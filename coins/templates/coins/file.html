@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="post" action="{% url 'coins:main' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% comment %}
+      <div class="dropzone-previews"></div>
+      <div id="myDropZone" class="dropzone"></div>
+      {% endcomment %}
+      {{form}}
+      <div class="mt-3">
+        <button id="add" class="btn btn-primary">Загрузить</button>
+      </div>
+        
+    </form>
+</div>
+{% if request.session.files %}
+<div class="container mt-3 w-75">
+    <p class="h3 ml-3 mb-3">Результаты: <span class="text-muted">Всего монет - {{request.session.files.all_coins}}</span></p>
+
+    {% for file in request.session.files.images %}
+        <div class="row border border-1 border-info my-1">
+            <div class="col-4 text-center">
+                <p>Средний цвет: RGB {{file.average_color}}</p>
+                <div style="background: RGB({{file.average_color.0}}, {{file.average_color.1}}, {{file.average_color.2}});" class="w-100 h-50">
+
+                </div>
+            </div>
+            <div class="col-8">
+                <p class="h5">Имя изображения: <span class="text-muted">{{file.name}}</span></p>
+                <p class="h5">Ширина изображения: <span class="text-muted">{{file.width}}</span></p>
+                <p class="h5">Высота изображения: <span class="text-muted">{{file.height}}</span></p>
+                <p class="h5">Количество монет: <span class="text-muted">{{file.circles}}</span></p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script>
+    // Dropzone.autoDiscover = false;
+    // $("div#myDropZone").dropzone({
+    //     url: "{% url 'coins:main' %}",
+    //     paramName: "file",
+    //     autoProcessQueue: false,
+
+    // });
+
+
+Dropzone.autoDiscover = false;
+jQuery(document).ready(function() {
+  var myDropzone = new Dropzone("#myDropZone", { 
+    url: '{% url 'coins:main' %}',
+    autoProcessQueue:false
+  });
+
+  $('#add').on('click',function(e){
+    e.preventDefault();
+    myDropzone.processQueue();  
+  });
+
+   this.on('sending', function(file, xhr, formData) {
+            // Append all form inputs to the formData Dropzone will POST
+            var data = $('#myDropZone').serializeArray();
+            $.each(data, function(key, el) {
+                formData.append(el.name, el.value);
+            });
+        });   
+});
+</script>
+{% endblock %}
