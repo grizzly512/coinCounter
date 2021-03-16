@@ -6,4 +6,6 @@ app_name = 'coins'
 urlpatterns = [
     path('', view=FileView.as_view(),
          name='main'),
+    path('ajax/', view=ajax,
+         name='ajax'),
 ]
