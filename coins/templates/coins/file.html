@@ -12,7 +12,7 @@
         
     </form>
 </div>
-<p class="h3 my-3"><span class="text-muted">Всего монет - <span id="count_coins">0</span></p>
+<p class="h3 my-3"><span class="text-muted">Всего монет - <span id="count_coins">0</span>. Всего рублей - <span id="count_rubles">0</span></p>
 <hr>
 <div id="wrapper" class="container mt-3 w-75">        
 </div>
@@ -31,7 +31,11 @@
             $count = Math.floor($span.text()) + response["parameters"]["all_coins"]; 
             $span.html($count);
 
-            $("#wrapper").append(`<div class="row border border-1 border-info my-1"><div class="col-4 text-center"><p>Средний цвет: RGB ${response["parameters"]["images"][0]["average_color"]}</p><div style="background: RGB(${response["parameters"]["images"][0]["average_color"][0]}, ${response["parameters"]["images"][0]["average_color"][1]}, ${response["parameters"]["images"][0]["average_color"][2]});" class="w-100 h-50"></div></div><div class="col-8"><p class="h5">Имя изображения: <span class="text-muted">${response["parameters"]["images"][0]["name"]}</span></p><p class="h5">Ширина изображения: <span class="text-muted">${response["parameters"]["images"][0]["width"]}</span></p><p class="h5">Высота изображения: <span class="text-muted">${response["parameters"]["images"][0]["height"]}</span></p><p class="h5">Количество монет: <span class="text-muted">${response["parameters"]["all_coins"]}</span></p></div></div></div>`);
+            var $span_rubles = $('#count_rubles');
+            $count_rubles = Math.floor($span_rubles.text()) + response["parameters"]["images"][0]["total_rubles"]; 
+            $span_rubles.html($count_rubles);
+
+            $("#wrapper").append(`<div class="row border border-1 border-info my-1"><div class="col-4 text-center"><p>Средний цвет: RGB ${response["parameters"]["images"][0]["average_color"]}</p><div style="background: RGB(${response["parameters"]["images"][0]["average_color"][0]}, ${response["parameters"]["images"][0]["average_color"][1]}, ${response["parameters"]["images"][0]["average_color"][2]});" class="w-100 h-50"></div></div><div class="col-8"><p class="h5">Имя изображения: <span class="text-muted">${response["parameters"]["images"][0]["name"]}</span></p><p class="h5">Ширина изображения: <span class="text-muted">${response["parameters"]["images"][0]["width"]}</span></p><p class="h5">Высота изображения: <span class="text-muted">${response["parameters"]["images"][0]["height"]}</span></p><p class="h5">Количество монет: <span class="text-muted">${response["parameters"]["all_coins"]}</span></p><p class="h5">Сумма рублей: <span class="text-muted">${response["parameters"]["images"][0]["total_rubles"]}</span></p></div></div></div>`);
         }
 
     });
